@@ -1,5 +1,5 @@
 """
-문제 이름: 절대힙
+문제 이름: 절댓값 힙
 문제 링크: https://www.acmicpc.net/problem/11286
 
 타임라인
