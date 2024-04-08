@@ -17,3 +17,16 @@ for n in range(1, NUM+1):
 for i in range(1, NUM+1):
     if creator[i] == 0:
         print(i)
+
+
+# set을 이용한 풀이
+origin_num = set(range(1, 10001))
+generated_num = set()
+
+for n in range(1, 10001):
+    chars = [int(c) for c in str(n)]
+    generated_num.add(n+sum(chars))
+
+self_num = sorted(origin_num - generated_num)
+for i in self_num:
+    print(i)
