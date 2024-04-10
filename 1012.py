@@ -10,7 +10,7 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 
-def bfs22(i, j, visited):
+def bfs(i, j, visited):
     q = deque([(i, j)])
     global cnt
     cnt += 1
@@ -41,5 +41,5 @@ for _ in range(T):
     for i in range(N):
         for j in range(M):
             if graph[i][j] and not visited[i][j]:
-                bfs22(i, j, visited)
+                bfs(i, j, visited)
     print(cnt)
