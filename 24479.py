@@ -68,3 +68,41 @@ dfs(graph[R], R)
 
 for i in range(1, N+1):
     print(order[i])
+
+
+
+"""
+며칠 뒤에 다시 풀어봄.
+2024.4.13 10:43pm~11:02pm (19분)
+
+1. sys.setrecursionlimit(10**6) 해주기. 아니면 런타임에러 남.
+2. graph = [[] for _ in range(N+1)] 은 [[],[],[],[],[]] 이런 형식으로 만들어진다.
+3. 출력형식 정확히 맞추기! 냅다 print(visited[1:])로 했다가 틀렸습니다 받음.ㅎㅎ..
+"""
+import sys
+sys.setrecursionlimit(10**6)
+input = sys.stdin.readline
+
+def dfs(v):
+    global cnt
+    cnt += 1
+    visited[v] = cnt
+    for i in graph[v]:
+        if not visited[i]:
+            dfs(i)
+
+N, M, R = map(int, input().split())
+graph = [[] for _ in range(N+1)]
+visited = [0] * (N+1)
+for _ in range(M):
+    u, v = map(int, input().split())
+    graph[u].append(v)
+    graph[v].append(u)
+
+for i in range(1, N):
+    graph[i].sort()
+
+cnt = 0
+dfs(R)
+for i in visited[1:]:
+    print(i)
