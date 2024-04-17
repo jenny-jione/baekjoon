@@ -29,3 +29,38 @@ for _ in range(n):
             print(0)
         else:
             print(heapq.heappop(q)[1])
+
+
+
+"""
+복습 (다시 풀어봄)
+2024.4.17 수요일
+
+<오늘 정리>
+1. heapq.heappush(q, value)
+    value에는 튜플 등도 가능하다.
+    단, 가장 첫번째 값을 기준으로 정렬된다. (오름차순)
+2. 시간초과 원인
+    input = sys.stdin.readline 을 해주지 않았음
+"""
+
+import heapq
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+q = []
+result = []
+for _ in range(N):
+    x = int(input())
+    if x!=0:
+        heapq.heappush(q, (abs(x), x))
+    else:
+        if not q:
+            result.append(0)
+        else:
+            (absval, val) = heapq.heappop(q)
+            result.append(val)
+
+for val in result:
+    print(val)
