@@ -18,7 +18,6 @@ input = sys.stdin.readline
 
 N, M = map(int, input().split())
 graph = []
-visited = [[0] * M for _ in range(N)]
 for i in range(N):
     graph.append(list(map(int, input().rstrip())))
 
@@ -72,3 +71,26 @@ print(bfs())
 #     result.sort()
 #     print(result)
 #     print(result[0])
+
+"""
+다시풀기 리뷰 (4.22, 4.30)
+q를 y,x만 저장하게 코드를 짜서 또 헤맴..
+
+각 위치마다 wall_break를 같이 저장해둔다는 아이디어가 가장 중요함!!
+q에 append할 때 행,열과 함께 wall_break 정보도 같이 append한다.
+그래서 popleft할 때마다 wall_break 정보를 가져올 수 있음.
+
+visited 배열과 헷갈리지 말자.
+visited는 보통 2차원 배열로 만들어둔 뒤 y,x 위치를 방문했는지 여부를 저장한다.
+여기서는 특정 좌표에 도달할 때 벽을 부순 후에 방문했을 수도 있고, 한 번도 부수지 않고 방문했을 수도 있다.
+그래서 두 가지 경우를 따로 다뤄야 하기 때문에 visited를 3차원 배열로 만든다.
+길(벽이 아닌 곳)의 경우 그 전에 벽을 부쉈는지 부수지 않았는지는 popleft로 얻은 wall_break로 알 수 있다.
+
+
+지나갈 수 있는 경우는 두 가지임
+1. 벽이 아닌 곳일 때 & 방문한 적 없을 때
+2. 벽이지만 그 전에 부순적이 없을 때
+
+결론: 또 다시 풀기 @!
+
+"""
