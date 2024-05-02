@@ -16,16 +16,16 @@ N, M = map(int, input().split())
 numbers = list(map(int, input().split()))
 numbers.sort()
 
-visited = [0] * (10001)
+visited = [0] * N
 seq = []
 
 def solve():
     if len(seq)==M:
         print(' '.join(map(str, seq)))
         return
-    for i in numbers:
+    for i in range(N):
         if not visited[i]:
-            seq.append(i)
+            seq.append(numbers[i])
             visited[i] = 1
             solve()
             seq.pop()
