@@ -29,3 +29,34 @@ def consult(i, rev):
 max_rev = 0
 consult(0, 0)
 print(max_rev)
+
+
+
+
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+cs = []
+for _ in range(N):
+    t, p = map(int, input().rstrip().split())
+    cs.append((t, p))
+
+print(cs)
+comb = []
+
+# 약간 조합의 변형 아닌가?
+def dfs(day):
+    if day >= N or day+cs[day][0]>N:
+        print('out!', comb)
+        return
+    print('day:', day)
+    comb.append(day)
+
+    dfs(day+cs[day][0])
+
+    dfs(day+1)
+
+
+
+dfs(0)
