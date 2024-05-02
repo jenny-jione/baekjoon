@@ -10,10 +10,9 @@
 2. 백트래킹
   1) '다시 돌아간다' == 재귀함수 호출 전에 설정한 조건을 호출 후에는 되돌린다.
   2) 유망성 판단 <--dfs와의 차이점
+3. 가장 단순한 순열 문제
 """
 
-import sys
-input = sys.stdin.readline
 
 N, M = map(int, input().split())
 visited = [0] * (N+1)
