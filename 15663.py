@@ -10,8 +10,8 @@
 --- 코드 참고 ---
 2024.05.02 12:45pm~1:05pm (40분)
 
-문제 정리
-"같은 것이 있는 순열"
+정리
+"같은 것이 있는 순열" -> used 변수로 불필요한 재귀함수 호출 방지하기
 1, 7, 9(1), 9(2)가 있을 때
 (1, 1)을 거르는 방법 --> visited 배열
 (1, 9(1)) (1, 9(2))를 거르는 방법 --> used 변수.
@@ -84,7 +84,7 @@ def solve():
         return
     used = 0
     for i in range(N):
-        if not visited[i] and numbers[i] != used:
+        if not visited[i] and used!=numbers[i]:
             visited[i] = 1
             seq.append(numbers[i])
             used = numbers[i]
