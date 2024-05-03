@@ -31,32 +31,66 @@ consult(0, 0)
 print(max_rev)
 
 
+"""
+다시풀기2
+
+타임라인
+2024.05.02 4:13pm~4:23pm (10분)
+2024.05.02 4:35pm~5:00pm (25분)
+2024.05.02 5:02pm~5:12pm (10분)
+2024.05.03 11:01am~11:51am (50분)
+--- 코드 참고 ---
+2024.05.03 11:51am~12:04am (13분)
+"""
 
 
-import sys
-input = sys.stdin.readline
+# 틀린 코드
+def solve(day, rev, sched):
+    global max_rev
+    print(f'sced:{sched}, day:{day}')
+    if day>N or day+cs[day][0]>N+1:
+        max_rev = max(max_rev, rev)
+        print('schedule:', sched, rev)
+        return
+    print('잉')
+    """
+    반례:
+3
+5 10
+2 10
+1 10
+solve를 맨 처음 호출했을 때부터 종료조건에 걸려버려서
+재귀함수 호출도 하기 전에 그냥 return 되어버림..;;
+그니까 이 아래 코드가 한 번도 실행되지 않고 끝나는 것..
+    """
+    solve(day+cs[day][0], rev+cs[day][1], sched+[day])
+    print('여기는 옴?')
+    solve(day+1, rev, sched)
 
+solve(1, 0, [])
+print(max_rev)
+
+
+# 코드 참고 후 다시 짠 코드
 N = int(input())
-cs = []
+
+cs = [(0, 0)]
 for _ in range(N):
-    t, p = map(int, input().rstrip().split())
+    t, p = map(int, input().strip().split())
     cs.append((t, p))
 
-print(cs)
-comb = []
+max_rev = 0
 
-# 약간 조합의 변형 아닌가?
-def dfs(day):
-    if day >= N or day+cs[day][0]>N:
-        print('out!', comb)
+def solve(day, rev):
+    global max_rev
+    if day>N:
+        max_rev = max(max_rev, rev)
         return
-    print('day:', day)
-    comb.append(day)
+    
+    solve(day+1, rev)
 
-    dfs(day+cs[day][0])
+    if day+cs[day][0] <= N+1:
+        solve(day+cs[day][0], rev+cs[day][1])
 
-    dfs(day+1)
-
-
-
-dfs(0)
+solve(1, 0)
+print(max_rev)
