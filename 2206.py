@@ -94,3 +94,50 @@ visited는 보통 2차원 배열로 만들어둔 뒤 y,x 위치를 방문했는�
 결론: 또 다시 풀기 @!
 
 """
+
+
+# 다시풀기 2번째 (2024.5.17)
+# 아래 코드로 제출했더니 시간초과 남..
+import sys
+input = sys.stdin.readline
+
+N, M = map(int, input().split())
+from collections import deque
+
+board = []
+for _ in range(N):
+    line = input().strip()
+    board.append([int(l) for l in line])
+
+visited = [[[0]*2 for _ in range(M)] for _ in range(N)]
+
+dy = [-1, 1, 0, 0]
+dx = [0, 0, -1, 1]
+
+def solve():
+    q = deque([[0, 0, 0]])
+    visited[0][0][0] = 1
+
+    while q:
+        y, x, wall_break = q.popleft()
+        if y==N-1 and x==M-1:
+            # print('finish!!', visited[N-1][M-1][wall_break])
+            return visited[N-1][M-1][wall_break]
+        for i in range(4):
+            ny, nx = y+dy[i], x+dx[i]
+            if ny in range(N) and nx in range(M) and not visited[ny][nx][0]:
+                if board[ny][nx] == 1 and wall_break==1:
+                #     print(f'{ny} {nx} - 이미 벽 뿌셔서 여기 진행 못함xx')
+                    continue
+                if board[ny][nx] == 1 and wall_break==0:
+                    # print(f'{ny} {nx} - 벽 뿌수기!!')
+                    visited[ny][nx][1] = visited[y][x][wall_break] + 1
+                    q.append([ny, nx, 1])
+                elif board[ny][nx] == 0:
+                    q.append([ny, nx, wall_break])
+                    visited[ny][nx][wall_break] = visited[y][x][wall_break] + 1
+    return -1
+
+
+answer = solve()
+print(answer)
