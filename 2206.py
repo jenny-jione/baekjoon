@@ -121,23 +121,73 @@ def solve():
     while q:
         y, x, wall_break = q.popleft()
         if y==N-1 and x==M-1:
-            # print('finish!!', visited[N-1][M-1][wall_break])
             return visited[N-1][M-1][wall_break]
         for i in range(4):
             ny, nx = y+dy[i], x+dx[i]
-            if ny in range(N) and nx in range(M) and not visited[ny][nx][0]:
-                if board[ny][nx] == 1 and wall_break==1:
-                #     print(f'{ny} {nx} - 이미 벽 뿌셔서 여기 진행 못함xx')
-                    continue
+            if ny in range(N) and nx in range(M):
                 if board[ny][nx] == 1 and wall_break==0:
-                    # print(f'{ny} {nx} - 벽 뿌수기!!')
-                    visited[ny][nx][1] = visited[y][x][wall_break] + 1
+                    visited[ny][nx][1] = visited[y][x][0] + 1
                     q.append([ny, nx, 1])
-                elif board[ny][nx] == 0:
-                    q.append([ny, nx, wall_break])
+                elif board[ny][nx] == 0 and not visited[ny][nx][wall_break]:
                     visited[ny][nx][wall_break] = visited[y][x][wall_break] + 1
+                    q.append([ny, nx, wall_break])
     return -1
 
 
 answer = solve()
 print(answer)
+
+
+# 내 기존 통과한 코드 참고해서 통과한 코드..
+import sys
+from collections import deque
+input = sys.stdin.readline
+
+N, M = map(int, input().split())
+
+board = []
+for _ in range(N):
+    board.append(list(map(int, input().rstrip())))
+
+dy = [-1, 1, 0, 0]
+dx = [0, 0, -1, 1]
+
+def solve():
+    q = deque([[0, 0, 0]])
+    visited = [[[0]*2 for _ in range(M)] for _ in range(N)]
+    visited[0][0][0] = 1
+
+    while q:
+        y, x, wall_break = q.popleft()
+        if y==N-1 and x==M-1:
+            return visited[N-1][M-1][wall_break]
+        for yi, xi in zip(dy, dx):
+            ny, nx = y+yi, x+xi
+            if ny in range(N) and nx in range(M):
+                if board[ny][nx] == 1 and wall_break==0:
+                    visited[ny][nx][1] = visited[y][x][0] + 1
+                    q.append([ny, nx, 1])
+                elif board[ny][nx] == 0 and visited[ny][nx][wall_break]==0:
+                    visited[ny][nx][wall_break] = visited[y][x][wall_break] + 1
+                    q.append([ny, nx, wall_break])
+    return -1
+
+
+answer = solve()
+print(answer)
+
+"""
+시간초과 해결 방법
+ny, nx를 구하는 방식을 바꿈
+
+기존(시간초과)
+    for i in range(4):
+        ny, nx = y+dy[i], x+dx[i]
+
+해결
+    for yi, xi in zip(dy, dx):
+        ny, nx = y+yi, x+xi
+
+이 둘이 그렇게 차이가 심한 건가..?
+왜냐면 다른 코드가 동일했을 때 이 부분만 바꾸니까 문제 통과함.. 이유가 뭐지..
+"""
