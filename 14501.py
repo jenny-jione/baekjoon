@@ -94,3 +94,51 @@ def solve(day, rev):
 
 solve(1, 0)
 print(max_rev)
+
+
+
+"""
+다시풀기3
+
+타임라인
+2024.05.20 3:15pm~3:30pm (15분)
+
+코드 안보고 한 번에 성공!
+
+* 이전 코드와 다르게 짠 부분
+1. cs 리스트 안에 tuple이 아니라 list로 넣음
+    전) t, p = map(int, input().strip().split())
+        cs.append((t, p))
+
+    후) cs.append(list(map(int, input().split())))
+"""
+
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+cs = [[0, 0]]
+for _ in range(N):
+    cs.append(list(map(int, input().split())))
+
+max_rev = 0
+def solve(day, rev):
+    global max_rev
+    if day > N:
+        max_rev = max(max_rev, rev)
+        return
+    
+    solve(day+1, rev)
+    if day+cs[day][0] <= N+1:
+        solve(day+cs[day][0], rev+cs[day][1])
+
+solve(1, 0)
+print(max_rev)
+
+
+"""
+3
+5 10
+6 20
+1 100
+"""
