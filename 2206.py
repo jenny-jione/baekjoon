@@ -191,3 +191,48 @@ ny, nx를 구하는 방식을 바꿈
 이 둘이 그렇게 차이가 심한 건가..?
 왜냐면 다른 코드가 동일했을 때 이 부분만 바꾸니까 문제 통과함.. 이유가 뭐지..
 """
+
+
+
+# 다시풀기 3번째 (2024.5.23)
+# 한 번에 통과!
+import sys
+from collections import deque
+input = sys.stdin.readline
+
+N, M = map(int, input().split())
+board = []
+for _ in range(N):
+    board.append(list(map(int, input().strip())))
+
+dy = [1, -1, 0, 0]
+dx = [0, 0, 1, -1]
+
+def solve():
+    visited = [[[0]*2 for _ in range(M)] for _ in range(N)]
+    visited[0][0][0] = 1
+    q = deque([[0, 0, 0]])
+    while q:
+        y, x, wall_break = q.popleft()
+        if y==N-1 and x==M-1:
+            return visited[y][x][wall_break]
+        for yi, xi in zip(dy, dx):
+            ny, nx = y+yi, x+xi
+            if ny in range(N) and nx in range(M) and not visited[ny][nx][wall_break]:
+                if board[ny][nx]==1 and wall_break==0:
+                    visited[ny][nx][1] = visited[y][x][0] + 1
+                    q.append([ny, nx, 1])
+                elif board[ny][nx]==0:
+                    visited[ny][nx][wall_break] = visited[y][x][wall_break] + 1
+                    q.append([ny, nx, wall_break])
+    return -1
+
+answer = solve()
+print(answer)
+
+"""
+2중 if문에서 어느 곳에 not visited를 체크해야 하는지 의문이 들었는데 해결됨.
+board[ny][nx]==1 and wall_break==0을 만족해서 들어온 순간, 전체 과정에서 벽 부수기는 한 번만 할 수 있으므로 해당 좌표는 방문을 안 한 곳일 수밖에 없음.
+그래서 not visited는 바깥 if문이 아니라 board[ny][nx]==0 조건에 추가하면 동일하게 작동함.
+board[ny][nx]==0 and not visited[ny][nx][wall_break]
+"""
