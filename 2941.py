@@ -38,3 +38,16 @@ while idx<len(word):
         answer += 1
         idx += 1
 print(answer)
+
+
+# 다른 풀이 (진짜 대박 간단함ㅎ)
+croatia = ['c=', 'c-', 'dz=', 'd-', 'lj', 'nj', 's=', 'z=']
+word = input()
+for c in croatia:
+    word = word.replace(c, '*')
+print(len(word))
+
+"""
+replace를 이용하면 이렇게 코드가 간단해진다.
+파이썬을 파이썬답게 써보자 ㅎㅎ !
+"""
