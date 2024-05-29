@@ -10,6 +10,7 @@
     안그러면 음수 몫을 구하게 되어서 틀림
     if vice == 0: (no!)
     if vice <= 0: (yes)
+2. math.ceil을 이용할 수 있다.
 """
 
 import sys
@@ -27,4 +28,14 @@ for cr in classroom:
     answer += (vice//c)
     if vice%c>0:
         answer += 1
+print(answer)
+
+
+# 개선
+import math
+answer = n
+for cr in classroom:
+    cr -= b
+    if cr > 0:
+        answer += math.ceil(cr/c)
 print(answer)
