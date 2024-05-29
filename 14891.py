@@ -81,3 +81,73 @@ answer = 0
 for i in range(1, 5):
     answer += gear[i][0] * (2**(i-1))
 print(answer)
+
+
+
+#
+"""
+rotate를 이용하여 다시 풀기! => 통과!
+2024.05.29 04:22pm~05:00pm (38분)
+2024.05.29 05:40pm~05:47pm (7분)
+
+코드 짜고 예제 입력으로 테스트하는데 3, 4가 실패.
+이유를 찾아보니 gear_direction을 매 cmd마다 초기화해야 하는데 하나로 사용해서 틀린거였다!
+for문 안에서 새로 초기화를 해주었더니 통과!
+
+1. 파이썬에서는 함수 내부에서 전역 변수에 직접 접근하고 수정할 수 있다.
+    그래서 check와 gear_direction을 함수 밖에서 초기화한 뒤,
+    make_direction과 rotate_gears 함수 내에서 변수를 참조할 때,
+    해당 변수가 함수 내부에 선언되어 있지 않다면,
+    파이썬은 변수의 값을 찾기 위해 함수 외부의 범위(즉, 전역 범위)로 이동한다.
+
+2. 리스트 변수를 초기화할 때, [0, 0, 0, 0, 0] 대신 간결하게 [0]*5를 사용하자.
+"""
+from collections import deque
+
+gears = [0]
+for _ in range(4):
+    gears.append(deque(list(map(int, input().strip()))))
+K = int(input())
+cmd = []
+for _ in range(K):
+    cmd.append(list(map(int, input().split())))
+
+def make_direction(gn, direct):
+    # 현재 기어의 회전 방향 할당
+    gear_direction[gn] = direct
+    check[gn] = 1
+    if direct==0:
+        return
+    if gn>1:
+        # 왼쪽 기어 정해주기
+        if check[gn-1]==0:
+            if gears[gn-1][2] == gears[gn][6]:
+                make_direction(gn-1, 0)
+            else:
+                make_direction(gn-1, direct*(-1))
+    if gn<4:
+        if check[gn+1]==0:
+            # 오른쪽 기어 정해주기
+            if gears[gn][2] == gears[gn+1][6]:
+                make_direction(gn+1, 0)
+            else:
+                make_direction(gn+1, direct*(-1))
+    return
+
+def rotate_gears():
+    for i in range(1, 5):
+        gears[i].rotate(gear_direction[i])
+
+for gn, d in cmd:
+    # check = [0, 0, 0, 0, 0]
+    # gear_direction = [0, 0, 0, 0, 0]
+    check = [0]*5
+    gear_direction = [0]*5
+    make_direction(gn, d)
+    rotate_gears()
+
+# 점수 계산
+answer = 0
+for i in range(4):
+    answer += gears[i+1][0] * (2**i)
+print(answer)
