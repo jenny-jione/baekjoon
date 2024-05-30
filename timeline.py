@@ -8,6 +8,9 @@
 2024.MM.DD 09:17pm~09:33pm (16분)
 2024.MM.DD 09:48pm~10:04pm (16분)
 * MM.DD는 그날 날짜가 출력된다.
+
+TODO
+1. 총 걸린 시간도 마지막에 넣기
 """
 
 from datetime import datetime, date
