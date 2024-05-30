@@ -157,3 +157,84 @@ pypy3로 제출하면        - 10% 근처에서 틀렸습니다 뜸 .. ㅠ
 # for i in range(R):
 #     dust += sum(graph[i])
 # print(dust)
+
+
+# 다시풀기 5.30
+"""
+2024.05.30 11:01am~12:04pm (63분)
+2024.05.30 12:27pm~12:43pm (16분)
+
+이 문제에서 배운 것/느낀 점
+1. index 다루기 연습을 해야 함. 정확도가 매우 매우 매우 중요함!
+    특히 경계값, 모서리에서 더더욱 중요함
+2. range 역순일 때  @@ 매 우 주 의 @@
+3. range 역순이 어렵다면 reversed를 쓰면 간편하다.
+    start값과 끝값만 제대로 설정한 다음 reversed를 적용하면 됨.
+    ex. 10부터 0까지 역순으로 출력하고 싶을 때
+        => range(10, -1, -1)
+        => reversed(range(0, 11))
+    ex. R-2부터 cc까지 역순으로 출력하고 싶을 때 (0<cc<R-2)
+        => range(R-2, cc-1, -1) 
+        => reversed(range(cc, R-1))
+        
+"""
+import math
+
+R, C, T = map(int, input().split())
+dy = [-1, 0, 1, 0]
+dx = [0, 1, 0, -1]
+room = []
+ac = []
+for i in range(R):
+    room.append(list(map(int, input().split())))
+    if room[-1][0] == -1:
+        ac.append(i)
+aa, cc = ac
+
+def spread():
+    temp = [[0]*C for _ in range(R)]
+    for y in range(R):
+        for x in range(C):
+            if room[y][x] == -1:
+                continue
+            cnt = 0
+            for yi, xi in zip(dy, dx):
+                ny, nx = y+yi, x+xi
+                if 0<=ny<R and 0<=nx<C and room[ny][nx]!=-1:
+                    temp[ny][nx] += math.floor(room[y][x]/5)
+                    cnt += 1
+            room[y][x] -= math.floor(room[y][x]/5) * cnt
+    for y in range(R):
+        for x in range(C):
+            room[y][x] += temp[y][x]
+
+def air_cleaning():
+    # 반시계
+    for y in range(aa-1, -1, -1):
+        room[y+1][0] = room[y][0]
+    for x in range(1, C):
+        room[0][x-1] = room[0][x]
+    for y in range(1, aa+1):
+        room[y-1][C-1] = room[y][C-1]
+    for x in range(C-2, -1, -1):
+        room[aa][x+1] = room[aa][x]
+    # 시계
+    for y in range(cc+1, R):
+        room[y-1][0] = room[y][0]
+    for x in range(1, C):
+        room[R-1][x-1] = room[R-1][x]
+    for y in range(R-2, cc-1, -1):
+        room[y+1][C-1] = room[y][C-1]
+    for x in range(C-2, -1, -1):
+        room[cc][x+1] = room[cc][x]
+    room[aa][0], room[cc][0] = -1, -1
+    room[aa][1], room[cc][1] = 0, 0
+
+for _ in range(T):
+    spread()
+    air_cleaning()
+
+answer = 2
+for i in range(R):
+    answer += sum(room[i])
+print(answer)
