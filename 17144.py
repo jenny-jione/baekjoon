@@ -238,3 +238,28 @@ answer = 2
 for i in range(R):
     answer += sum(room[i])
 print(answer)
+
+
+##
+# range 역순 대신 reversed를 사용한 air_cleaning 함수.
+def air_cleaning():
+    # 반시계
+    for y in reversed(range(0, aa)):
+        room[y+1][0] = room[y][0]
+    for x in range(1, C):
+        room[0][x-1] = room[0][x]
+    for y in range(1, aa+1):
+        room[y-1][C-1] = room[y][C-1]
+    for x in reversed(range(C-1)):
+        room[aa][x+1] = room[aa][x]
+    # 시계
+    for y in range(cc+1, R):
+        room[y-1][0] = room[y][0]
+    for x in range(1, C):
+        room[R-1][x-1] = room[R-1][x]
+    for y in reversed(range(cc, R-1)):
+        room[y+1][C-1] = room[y][C-1]
+    for x in reversed(range(C-1)):
+        room[cc][x+1] = room[cc][x]
+    room[aa][0], room[cc][0] = -1, -1
+    room[aa][1], room[cc][1] = 0, 0
