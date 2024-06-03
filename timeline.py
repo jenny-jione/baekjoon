@@ -10,7 +10,8 @@
 * MM.DD는 그날 날짜가 출력된다.
 
 TODO
-1. 총 걸린 시간도 마지막에 넣기
+1. (완료) 총 걸린 시간도 마지막에 넣기
+2. (완료) 출력에 아예 README.md 넣기
 """
 
 from datetime import datetime, date
@@ -37,5 +38,13 @@ for _ in range(N):
     start, end = data.split('-')
     result.append(calculate(start, end))
 
-for r in result:
-    print(r)
+print(f"""
+\"\"\"
+문제 이름: 
+문제 링크: 
+문제 티어: 
+
+타임라인
+{chr(10).join(result)}
+\"\"\"
+""")
