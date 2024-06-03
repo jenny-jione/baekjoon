@@ -176,3 +176,98 @@ for _ in range(T):
 #         print('NO')
 #     else:
 #         print('YES')
+
+
+
+# 다시 풀기 (5.31)
+"""
+다시풀기
+
+2024.05.31 01:18pm~01:50pm (32분)
+2024.05.31 02:07pm~02:39pm (32분)
+2024.05.31 03:17pm~03:57pm (40분)
+--- 시간초과 나서 힌트 봄 .. 처음 풀 때랑 똑 같 이 접근하고 있었네..ㅎ
+내 접근법: closed circle 찾기
+힌트: 인접한 정점은 다른 색으로 칠해야 한다
+
+질문
+1. K만큼 반복문 하는데.. 그 안에 다 구현하는게 맞나? 뭔가 함수로 따로 빼야 하지 않을까?
+"""
+# 시간초과 코드
+# import sys
+# input = sys.stdin.readline
+
+# def dfs(graph, start, v, circle: list):
+#     global closed
+#     for u in graph[v]:
+#         if v!=start and u==start and len(circle)>=3:
+#             if len(circle)%2==1:
+#                 closed = True
+#                 return
+#     for u in graph[v]:
+#         if not visited[u]:
+#             visited[u] = 1
+#             circle.append(u)
+#             dfs(graph, start, u, circle)
+#             visited[u] = 0
+#             circle.pop()
+
+# K = int(input())
+# for _ in range(K):
+#     V, E = map(int, input().split())
+#     graph = [[] for _ in range(V+1)]
+#     for _ in range(E):
+#         u, v = map(int, input().split())
+#         graph[u].append(v)
+#         graph[v].append(u)
+#     visited = [0]*(V+1)
+#     for i in range(1, V+1):
+#         closed = False
+#         visited[i] = 1
+#         dfs(graph, i, i, [i])
+#         visited[i] = 0
+#         if closed:
+#             print('NO')
+#             break
+#     else:
+#         print('YES')
+
+
+# 힌트+코드 참고.. 이번엔 dfs로.
+import sys
+sys.setrecursionlimit(10**6)
+input = sys.stdin.readline  # 이거 안하니까 시간초과남. 이 한 줄 추가하고 바로 통과함
+K = int(input())
+
+def paint(v, color):
+    visited[v] = color
+
+    for u in graph[v]:
+        if not visited[u]:
+            result = paint(u, -color)
+            if not result:
+                return False
+        else:
+            if visited[u]==color:
+                return False
+    return True
+
+for _ in range(K):
+    V, E = map(int, input().split())
+    graph = [[] for _ in range(V+1)]
+    for _ in range(E):
+        u, v = map(int, input().split())
+        graph[u].append(v)
+        graph[v].append(u)
+
+    visited = [0]*(V+1)
+    
+    for i in range(1, V+1):
+        if not visited[i]:
+            result = paint(i, 1)
+            if not result:
+                break
+    if result:
+        print('YES')
+    else:
+        print('NO')
