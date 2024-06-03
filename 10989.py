@@ -44,3 +44,22 @@ for num in range(1, 10001):
     if num in my_dict:
         for _ in range(my_dict[num]):
             print(num)
+
+"""
+참고할 만한 다른 코드
+setdefault를 쓰지 않고 리스트를 이용하는 방법도 있다.
+"""
+
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+arr = [0]*10001
+for _ in range(N):
+    n = int(input())
+    arr[n] += 1
+
+for n in range(1, 10001):
+    if arr[n] > 0:
+        for _ in range(arr[n]):
+            print(n)
