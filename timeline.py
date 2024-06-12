@@ -26,17 +26,20 @@ def calculate(start_time_str, end_time_str):
     start_time_result = start_time.strftime('%I:%M%p').lower()
     end_time_result = end_time.strftime('%I:%M%p').lower()
 
-    elasped_minutes = elasped_time.total_seconds() / 60
-    result = f'{today} {start_time_result}~{end_time_result} ({int(elasped_minutes)}분)'
-    return result
+    elasped_minutes = int(elasped_time.total_seconds() / 60)
+    result_str = f'{today} {start_time_result}~{end_time_result} ({elasped_minutes}분)'
+    return result_str, elasped_minutes
 
 N = int(input('Please enter multiple time ranges:'))
 
 result = []
+total = 0
 for _ in range(N):
     data = input()
     start, end = data.split('-')
-    result.append(calculate(start, end))
+    result_str, elasped = calculate(start, end)
+    result.append(result_str)
+    total += elasped
 
 print(f"""
 \"\"\"
@@ -45,6 +48,8 @@ print(f"""
 문제 티어: 
 
 타임라인
-{chr(10).join(result)}
+{chr(10).join(result)}  total: {total}분
+
+<정리>
 \"\"\"
 """)
