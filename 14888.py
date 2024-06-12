@@ -58,3 +58,70 @@ dfs(ops, [])
 
 print(max_val)
 print(min_val)
+
+
+####
+
+# 다시 풀기 (통과)
+"""
+타임라인
+2024.06.12 12:16pm~12:40pm (24분)
+2024.06.12 12:50pm~12:57pm (7분)  total: 31분
+
+<정리>
+1. -10억까지도 중간 결과가 나올 수 있음. 그래서 max_val 초기값은 0이 아니라 -1e9 !
+2. 음수를 나눌 때는 조건문 없이 int()로 간단히 해결이 가능하다.
+    int(음수/나누는수)로 하면 간단.
+    >>> 7 // 2
+    3
+    >>> 7 / 2
+    3.5
+    >>> int(7 / 2)
+    3
+    >>> -7 // 2
+    -4
+    >>> -7 / 2
+    -3.5
+    >>> int(-7 / 2)
+    -3
+"""
+
+N = int(input())
+nums = list(map(int, input().split()))
+op = list(map(int, input().split()))
+max_val = -int(1e9)
+min_val = int(1e9)
+
+def dfs(idx, val, op):
+    global max_val, min_val
+    if idx == N-1:
+        max_val = max(max_val, val)
+        min_val = min(min_val, val)
+        return
+    cur = nums[idx+1]
+    if op[0] > 0:
+        op[0] -= 1
+        dfs(idx+1, val+cur, op)
+        op[0] += 1
+    if op[1] > 0:
+        op[1] -= 1
+        dfs(idx+1, val-cur, op)
+        op[1] += 1
+    if op[2] > 0:
+        op[2] -= 1
+        dfs(idx+1, val*cur, op)
+        op[2] += 1
+    if op[3] > 0:
+        op[3] -= 1
+        if val < 0:
+            temp = ((-val)//cur)*-1
+        else:
+            temp = val//cur
+        dfs(idx+1, temp, op)
+        # 이 한줄로 간결하게 바꾸기 가능.
+        # dfs(idx+1, int(val/cur), op)
+        op[3] += 1
+
+dfs(0, nums[0], op)
+print(max_val)
+print(min_val)
