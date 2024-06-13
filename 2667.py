@@ -1,6 +1,7 @@
 """
 문제 이름: 단지번호 붙이기
 문제 링크: https://www.acmicpc.net/problem/2667
+문제 티어: 실버 1
 
 타임라인
 2024.4.10 8:10pm~8:56pm (46분)
@@ -55,3 +56,56 @@ zipnum.sort()
 print(danji)
 for z in zipnum:
     print(z)
+
+
+
+# 다시 풀기
+"""
+타임라인
+2024.06.13 12:18pm~12:29pm (11분)  total: 11분
+
+<정리>
+1. 붙어서 들어오는 입력은 그냥 list(map(int, input()))을 해주면 리스트로 저장된다.
+"""
+
+from collections import deque
+
+N = int(input())
+board = []
+for _ in range(N):
+    board.append(list(map(int, input())))
+visited = [[0]*N for _ in range(N)]
+dy = [-1, 1, 0, 0]
+dx = [0, 0, -1, 1]
+
+danzi = 0
+houses = []
+
+def bfs(y, x):
+    q = deque([[y, x]])
+    visited[y][x] = 1
+    cnt = 0
+    while q:
+        y, x = q.popleft()
+        cnt += 1
+        for yi, xi in zip(dy, dx):
+            ny, nx = y+yi, x+xi
+            if ny not in range(N) or nx not in range(N):
+                continue
+            if visited[ny][nx]==0 and board[ny][nx]==1:
+                visited[ny][nx] = 1
+                q.append([ny, nx])
+    return cnt
+
+
+for i in range(N):
+    for j in range(N):
+        if not visited[i][j] and board[i][j]:
+            # 단지 탐색 시작
+            houses.append(bfs(i, j))
+            danzi += 1
+
+houses.sort()
+print(danzi)
+for h in houses:
+    print(h)
